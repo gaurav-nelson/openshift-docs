@@ -2,6 +2,7 @@ language: ruby
 rvm:
   - 2.3.1
 gemfile: Gemfile
+before_install: ./testtravis.sh
 after_install: gem list
 script: bundle exec rake build
 notifications:

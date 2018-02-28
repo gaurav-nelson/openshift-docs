@@ -14,3 +14,5 @@ instructions on how to enable images to run with *USER* in the Dockerfile, see
 xref:../../admin_guide/manage_scc.adoc#how-do-i[Managing Security Context
 Constraints].
 endif::[]
+
+http://www.google.com

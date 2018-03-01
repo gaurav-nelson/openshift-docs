@@ -15,7 +15,7 @@ toc::[]
 xref:../../architecture/core_concepts/builds_and_image_streams.adoc#source-build[S2I]
 enabled Node.js images for building and running Node.js applications.
 ifndef::openshift-enterprise[]
-The https://github.com/openshift/sti-nodejs[Node.js S2I builder image]
+The https://github.com/openshift2/sti-nodejs[Node.js S2I builder image]
 endif::openshift-enterprise[]
 ifdef::openshift-enterprise[]
 The Node.js S2I builder image

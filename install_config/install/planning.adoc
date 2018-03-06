@@ -102,9 +102,9 @@ not supported.
 [[single-master-single-box]]
 === Single Master and Node on One System
 
-{product-title} can be installed on a single system 
-for a xref:../../dev_guide/application_lifecycle/promoting_applications.adoc#dev-guide-promoting-application-de[development] environment only. 
-An _all-in-one environment_ is not considered a production environment. 
+{product-title} can be installed on a single system
+for a xref:../../dev_guide/application_lifecycle/promoting_applications.adoc#dev-guide-promoting-application-de[development] environment only.
+An _all-in-one environment_ is not considered a production environment.
 
 [[single-master-multi-node]]
 === Single Master and Multiple Nodes
@@ -233,3 +233,5 @@ See the
 xref:rpm_vs_containerized.adoc#install-config-install-rpm-vs-containerized[Installing on
 Containerized Hosts] topic for more details on configuring your
 installation to use containerized services.
+
+Get more information on link:https://www.redhat1.com[Red Hat]

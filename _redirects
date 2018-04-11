@@ -1,0 +1,6 @@
+# Redirects from what the browser requests to what we serve
+/   /openshift-enterprise/(head detached at fetch_head)/welcome/index.html
+/openshift-enterprise   /openshift-enterprise/(head detached at fetch_head)/welcome/index.html
+/openshift-online   /openshift-online/(head detached at fetch_head)/welcome/index.html
+/openshift-origin   /openshift-origin/latest/welcome/index.html
+#/openshift-dedicated /openshift-dedicated/(head detached at fetch_head)/welcome/index.html

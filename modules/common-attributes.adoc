@@ -44,3 +44,8 @@ endif::[]
 :ocp-supported-version: 4.5
 :scanner-version: 2.16.0
 :collector-version: 3.1.27-latest
+// Following variables are used in modules/adding-comments.adoc and modules/adding-tags.adoc
+:smallporv: process
+:smallpluralporv: processes
+:capsporv: Process
+:capspluralporv: Processes

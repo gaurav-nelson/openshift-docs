@@ -104,6 +104,8 @@ Distros: openshift-acs
 Topics:
 - Name: Managing compliance
   File: manage-compliance
+- Name: Using admisssion controller enforcement
+  File: use-admission-controller-enforcement
 - Name: Managing vulnerabilities
   File: manage-vulnerabilities
 - Name: Searching and filtering

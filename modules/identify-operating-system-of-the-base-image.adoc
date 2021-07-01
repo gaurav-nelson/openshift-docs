@@ -1,6 +1,7 @@
 // Module included in the following assemblies:
 //
 // * operating/manage-vulnerabilities.adoc
+// * operating/examine-images.adoc
 :_module-type: PROCEDURE
 [id="identify-operating-system-of-the-base-image_{context}"]
 = Identifying operating system of the base image

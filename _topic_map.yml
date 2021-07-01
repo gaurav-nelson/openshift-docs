@@ -104,6 +104,8 @@ Distros: openshift-acs
 Topics:
 - Name: Managing compliance
   File: manage-compliance
+- Name: Examining images
+  File: examine-images
 - Name: Managing vulnerabilities
   File: manage-vulnerabilities
 - Name: Searching and filtering

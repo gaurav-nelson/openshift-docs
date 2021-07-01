@@ -1,0 +1,63 @@
+[id="examine-images"]
+= Examining images
+include::modules/common-attributes.adoc[]
+:context: examine-images
+
+toc::[]
+
+[role="_abstract"]
+With {product-title} you can analyze images for vulnerabilities.
+Scanner analyzes all image layers to check for known vulnerabilities by comparing them with the Common Vulnerabilities and Exposures (CVEs) list.
+
+[NOTE]
+====
+To disable language-specific vulnerability scanning run the following command:
+[source,terminal]
+----
+$ oc -n stackrox set env deploy/scanner ROX_LANGUAGE_VULNS=false <1>
+----
+<1> If you are using {product-title} version 3.0.47 or older, replace the environment variable name `ROX_LANGUAGE_VULNS` with `LANGUAGE_VULNS`.
+====
+
+When Scanner finds any vulnerabilities, it:
+
+* Shows them in the xref:../operating/manage-vulnerabilities.adoc#vulnerability-management-view_acs-operating-manage-vulnerabilities[*Vulnerability Management* view] for detailed analysis.
+* Includes them in risk ranking.
+* Checks them against system policies.
+* Highlights them in the portal for risk assessment.
+
+Scanner inspects the images and identifies the installed components based on the files in the images.
+It may fail to identify installed components or vulnerabilities if the final images are modified to remove the following files:
+
+* For package managers:
+** `/etc/alpine-release`
+** `/etc/apt/sources.list`
+** `/etc/lsb-release`
+** `/etc/os-release` or `/usr/lib/os-release`
+** `/etc/oracle-release`, `/etc/centos-release`, `/etc/redhat-release`, or `/etc/system-release`
+** or similar system files.
+* For language-level dependencies:
+** `package.json` for JavaScript.
+** `dist-info` or `egg-info` for Python.
+** `MANIFEST.MF` in Java Archive (JAR) for Java.
+* For application-level dependencies:
+** `dotnet/shared/Microsoft.AspNetCore.App/`
+** `dotnet/shared/Microsoft.NETCore.App/`
+
+include::modules/scanning-images.adoc[leveloffset=+1]
+
+include::modules/vulnerability-definitions.adoc[leveloffset=+1]
+
+include::modules/vulnerability-scores.adoc[leveloffset=+1]
+
+include::modules/re-scanning-images.adoc[leveloffset=+1]
+
+include::modules/view-images-in-your-environment.adoc[leveloffset=+1]
+
+include::modules/view-dockerfile-for-image.adoc[leveloffset=+1]
+
+include::modules/scan-inactive-images.adoc[leveloffset=+1]
+
+include::modules/identify-which-layer-of-the-container-image-introduces-vulnerabilities.adoc[leveloffset=+1]
+
+include::modules/identify-operating-system-of-the-base-image.adoc[leveloffset=+1]

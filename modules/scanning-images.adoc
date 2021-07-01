@@ -1,0 +1,76 @@
+// Module included in the following assemblies:
+//
+// * operating/examine-images.adoc
+:_module-type: CONCEPT
+[id="scanning-images_{context}"]
+= Scanning images
+
+[role="_abstract"]
+Central submits image scanning requests to Scanner.
+Upon receiving these requests, Scanner pulls image layers from the relevant registry, checks the images, and identifies installed packages in each layer.
+Then it compares the identified packages and programming language-specific dependencies with vulnerability lists and sends information back to Central.
+
+You can also integrate with another vulnerability scanner.
+//Add link to integration topics
+
+Scanner identifies vulnerabilities that are installed by package managers, language-level, and application-level dependencies.
+
+[discrete]
+== Supported package formats
+
+* yum
+* microdnf
+* apt
+* apk
+* dpkg
+* rpm
+
+[discrete]
+== Supported programming languages
+
+* Java
+* JavaScript
+* Python
+* Ruby
+
+[discrete]
+== Supported runtimes and frameworks
+
+Beginning from {product-title} version 3.0.50 (Scanner version 2.5.0), Scanner identifies vulnerabilities in the following developer platforms:
+
+* .NET Core
+* ASP.NET Core
+
+[discrete]
+== Supported operating systems
+
+Scanner identifies vulnerabilities in the following Linux distributions:
+
+|===
+| Distribution | Version
+
+| https://www.alpinelinux.org/[Alpine Linux]
+| 3.2 to 3.12
+
+| https://aws.amazon.com/amazon-linux-ami[Amazon Linux]
+| 2018.03, 2
+
+| https://wiki.centos.org/Manuals/ReleaseNotes[CentOS] and https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/[Red Hat Enterprise Linux] (RHEL)
+| 5, 6, 7, 8
+
+| https://www.debian.org/releases/[Debian]
+| 9 and newer
+
+| https://www.oracle.com/linux/[Oracle Linux]
+| 5 and newer
+
+| http://releases.ubuntu.com/[Ubuntu]
+| 12.04 to 20.04 (including LTS and ESM releases)
+|===
+
+[NOTE]
+====
+. The listed supported platforms are the distributions in which Scanner identifies vulnerabilities, and it is different from the supported platforms on which you can install {product-title}.
+. Scanner does not support the Fedora operating system because Fedora does not maintain a vulnerability database for packages within the Fedora repositories.
+However, Scanner still detects language-specific vulnerabilities in Fedora-based images.
+====

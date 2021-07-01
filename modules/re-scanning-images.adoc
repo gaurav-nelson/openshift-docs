@@ -1,0 +1,22 @@
+// Module included in the following assemblies:
+//
+// * operating/examine-images.adoc
+:_module-type: CONCEPT
+[id="re-scanning-images_{context}"]
+= Re-scanning images
+
+[role="_abstract"]
+{product-title} periodically scans all active (deployed) images and updates the image scan results to reflect the latest vulnerability definitions.
+
+[NOTE]
+====
+From {product-title} version 3.0.57, you can configure the *Watch* setting for images to enable automatic scanning of inactive (undeployed) images.
+====
+//Add link to scan-inactive-images topic
+
+{product-title} scans all deployed images and updates the results every 4 hours.
+{product-title} fetches the image scan results from the Scanner or other integrated image scanners that you use.
+//Add link to integrate image scanners topic
+
+You can also use the `roxctl` CLI to check the image scan results on demand.
+//Add link to roxctl CLI topic

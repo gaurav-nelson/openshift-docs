@@ -1,11 +1,11 @@
 // Module included in the following assemblies:
 //
-// * integration/integrate-with-image-registries.adoc
+// * integration/integrate-with-image-vulnerability-scanners.adoc
 :_module-type: PROCEDURE
-[id="manual-configuration-image-registry-qcr_{context}"]
-= Manually configuring Quay container registry
+[id="integrate-with-qcr-scanner_{context}"]
+= Integrating with Quay container registry
 
-You can integrate {product-title} with Quay container registry.
+You can integrate {product-title} with Quay container registry for scanning images.
 
 .Prerequisites
 * You need an *OAuth Token* for authentication with the Quay container registry.
@@ -17,7 +17,7 @@ You can integrate {product-title} with Quay container registry.
 . Click *New Integration*.
 . Fill in the required details for:
 .. *Integration Name*: The name you want to give to this integration.
-.. *Types*: Select *Registry*.
+.. *Types*: Select *Scanner*.
 .. *Endpoint*: The address of the registry.
 .. *OAuth Token*
 . Select *Test* (checkmark icon) to test that the integration with the selected registry is working.

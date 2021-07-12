@@ -97,6 +97,8 @@ Topics:
   File: generate-diagnostic-bundle
 - Name: Understanding online telemetry
   File: online-telemetry
+- Name: Configuring endpoints
+  File: configure-endpoints
 - Name: Monitoring with Prometheus
   File: monitor-acs
 - Name: Enabling audit logging

@@ -1,0 +1,59 @@
+name: Generate API Documentation
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'RHACS Version (e.g., 4.6.0)'
+        required: true
+        type: string
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # Automatically provided by GitHub Actions
+
+      - name: Set up Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+          sudo systemctl start docker
+          sudo systemctl enable docker
+
+      - name: Pull the latest image
+        run: docker pull quay.io/ganelson/rhacs-api-docs-gen
+
+      - name: Create a new branch
+        run: |
+          git checkout -b api-docs-update-${{ github.event.inputs.version }}
+
+      - name: Generate documentation
+        run: |
+          docker run --rm -it -v "${{ github.workspace }}":/openshift-docs quay.io/ganelson/rhacs-api-docs-gen generate ${{ github.event.inputs.version }}
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Generate API documentation for version ${{ github.event.inputs.version }}" || echo "No changes to commit"
+
+      - name: Push changes to fork
+        run: |
+          git push origin api-docs-update-${{ github.event.inputs.version }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          title: "[RHACS] Update API docs for ${{ github.event.inputs.version }}"
+          body: "This PR updates the API documentation for version ${{ github.event.inputs.version }}."
+          base: rhacs-docs-main
+          head: api-docs-update-${{ github.event.inputs.version }}
+          draft: false
+          maintainer_can_modify: true
+          repository: openshift/openshift-docs

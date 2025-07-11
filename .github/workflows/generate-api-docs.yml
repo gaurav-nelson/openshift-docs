@@ -30,7 +30,7 @@ jobs:
           image: quay.io/ganelson/rhacs-api-docs-gen
           options: -v ${{ github.workspace }}:/openshift-docs
           run: |
-            ls -a
+            ./rhacs-api-docs-gen.sh generate ${{ github.event.inputs.version }}
 
       - name: Commit changes
         run: |

@@ -18,23 +18,21 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }} # Automatically provided by GitHub Actions
 
-      - name: Set up Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io
-          sudo systemctl start docker
-          sudo systemctl enable docker
-
-      - name: Pull the latest image
-        run: docker pull quay.io/ganelson/rhacs-api-docs-gen
-
       - name: Create a new branch
         run: |
+          git checkout rhacs-docs-main
+          git remote add upstream git@github.com:openshift/openshift-docs.git
+          git fetch upstream rhacs-docs-main
+          git rebase upstream/rhacs-docs-main
           git checkout -b api-docs-update-${{ github.event.inputs.version }}
 
-      - name: Generate documentation
-        run: |
-          docker run --rm -it -v "${{ github.workspace }}":/openshift-docs quay.io/ganelson/rhacs-api-docs-gen generate ${{ github.event.inputs.version }}
+      - name: Run the documentation generation process with Docker
+        uses: addnab/docker-run-action@v3
+        with:
+          image: quay.io/ganelson/rhacs-api-docs-gen
+          options: -v ${{ github.workspace }}:/openshift-docs
+          run: |
+            generate ${{ github.event.inputs.version }}
 
       - name: Commit changes
         run: |

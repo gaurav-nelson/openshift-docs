@@ -4,16 +4,16 @@
 
 :_mod-docs-content-type: PROCEDURE
 [id="nw-dpf-creating-sriov-config_{context}"]
-= Create the `NodeSRIOVDevicePluginConfig` resource
+= Create the NodeSRIOVDevicePluginConfig resource
 
 [role="_abstract"]
 You can create a `NodeSRIOVDevicePluginConfig` custom resource to define how SR-IOV virtual functions on the management cluster worker nodes are allocated to DPF components.
-This resource replaces the manual SR-IOV device plugin `DaemonSet` and control plane node patching from previous versions.
+This resource configures SR-IOV device plugin pods on worker nodes to allocate virtual functions for DPU management and workload traffic.
 
 .Prerequisites
 
-* You have installed the DPF Operator.
-* You have created the `DPFOperatorConfig` resource.
+* The DPF Operator is installed.
+* The `DPFOperatorConfig` resource is created.
 
 .Procedure
 
@@ -47,7 +47,7 @@ spec:
 where:
 +
 `bf3-p0-vfs-mgmt`:: Reserves VF index 1 on PF0 for DPU management connectivity.
-`bf3-p0-vfs`:: Reserves VF indices 2-45 on PF0 for workload traffic with RDMA enabled. The `pfIndex: 0` value refers to the first physical function of the BlueField-3 DPU.
+`bf3-p0-vfs`:: Allocates VF indices 2-45 on PF0 for workload traffic with RDMA enabled. The `pfIndex: 0` value refers to the first physical function of the BlueField-3 DPU.
 
 . Apply the resource file:
 +

@@ -62,7 +62,7 @@ Only control plane nodes are required at this stage.
 +
 [source,terminal]
 ----
-$ export KUBECONFIG=mgmt-kubeconfig
+$ export KUBECONFIG="$(pwd)/mgmt-kubeconfig"
 ----
 
 . Verify that all nodes are in a `Ready` state:

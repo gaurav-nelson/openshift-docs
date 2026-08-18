@@ -4,31 +4,24 @@
 
 :_mod-docs-content-type: PROCEDURE
 [id="nw-dpf-creating-ovnk-service_{context}"]
-= Create the HBN and OVN-Kubernetes DPU service resources
+= Create the HBN and OVN-Kubernetes DPU service configurations
 
 [role="_abstract"]
-You can create the Host-Based Networking (HBN) and OVN-Kubernetes DPU services by defining `DPUServiceTemplate` and `DPUServiceConfiguration` custom resources. The HBN service provides BGP-based networking on the DPU with ECMP routing support. The OVN-Kubernetes service provides pod networking on the DPU.
+You can create `DPUServiceConfiguration` custom resources for the Host-Based Networking (HBN) and OVN-Kubernetes DPU services.
+The HBN service provides BGP-based networking on the DPU with ECMP routing support.
+The OVN-Kubernetes service provides pod networking on the DPU.
 
-[IMPORTANT]
+[NOTE]
 ====
-The following OVN-Kubernetes features are not supported as part of the CNI used in this technical preview:
-
-* User-Defined Networks (UDN)
-* Egress IP
-* `AdminNetworkPolicy` (ANP)
-* Hybrid overlay
-* Egress firewall
-* Quality of Service (QoS)
-* Border Gateway Protocol (BGP)
-* Multicast
-* Local gateway mode
+The `DPUServiceTemplate` resources for both HBN and OVN-Kubernetes are automatically created and managed by the `dpf-hcp-provisioner-operator`.
+You only need to create the `DPUServiceConfiguration` resources.
 ====
 
 .Prerequisites
 
-* You have installed the DPF Operator.
-* You have created the `DPFOperatorConfig` resource.
-* You have set the DPF Operator environment variables. For details, see "DPF Operator installation environment variables".
+* The DPF Operator is installed.
+* The `DPFOperatorConfig` resource is created.
+* The DPF Operator environment variables are set. For details, see "DPF Operator installation environment variables".
 
 .Procedure
 
@@ -36,26 +29,6 @@ The following OVN-Kubernetes features are not supported as part of the CNI used 
 +
 [source,yaml]
 ----
-apiVersion: svc.dpu.nvidia.com/v1alpha1
-kind: DPUServiceTemplate
-metadata:
-  name: hbn
-  namespace: dpf-operator-system
-spec:
-  deploymentServiceName: "hbn"
-  helmChart:
-    source:
-      repoURL: $HBN_HELM_REPO_URL
-      version: $HBN_HELM_CHART_VERSION
-      chart: doca-hbn
-    values:
-      image:
-        repository: $HBN_IMAGE_REPO
-        tag: $HBN_IMAGE_TAG
-      resources:
-        memory: 6Gi
-        nvidia.com/bf_sf: 3
----
 apiVersion: svc.dpu.nvidia.com/v1alpha1
 kind: DPUServiceConfiguration
 metadata:
@@ -151,35 +124,13 @@ spec:
 +
 [source,terminal]
 ----
-$ envsubst < hbn.yaml | oc apply -f -
+$ oc apply -f hbn.yaml
 ----
 
 . Create a file named `ovn-k.yaml` with the following content:
 +
 [source,yaml]
 ----
-apiVersion: svc.dpu.nvidia.com/v1alpha1
-kind: DPUServiceTemplate
-metadata:
-  name: ovn
-  namespace: dpf-operator-system
-spec:
-  deploymentServiceName: "ovn"
-  helmChart:
-    source:
-      repoURL: $OVN_TEMPLATE_CHART_URL
-      chart: ovn-kubernetes-chart
-      version: $OVN_CHART_VERSION
-    values:
-      commonManifests:
-        enabled: true
-      dpuManifests:
-        enabled: true
-        cniBinDir: /var/lib/cni/bin/
-        cniConfDir: /run/multus/cni/net.d
-      leaseNamespace: "openshift-ovn-kubernetes"
-      gatewayOpts: "--gateway-interface=br-dpu"
----
 apiVersion: svc.dpu.nvidia.com/v1alpha1
 kind: DPUServiceConfiguration
 metadata:
@@ -192,15 +143,15 @@ spec:
       values:
         global:
           enableOvnKubeIdentity: false
-        k8sAPIServer: https://$HOST_CLUSTER_API:$TARGETCLUSTER_API_SERVER_PORT
+        k8sAPIServer: https://$HOST_CLUSTER_API:6443
         podNetwork: $POD_CIDR/23
         serviceNetwork: $SERVICE_CIDR
+        hostNetworkNamespace: "openshift-host-network"
         mtu: $OVN_MTU
         dpuManifests:
-          ovnMultiNetworkEnable: "false"
-          namespaceSecretName: "ovn-dpu"
-          vtepCIDR: $VTEP_CIDR
-          hostCIDR: $TARGETCLUSTER_NODE_CIDR
+          kubernetesSecretName: "ovn-dpu"
+          vtepCIDR: $HBN_OVN_NETWORK
+          hostCIDR: $DPU_HOST_CIDR
           ipamPool: "pool1"
           ipamPoolType: "cidrpool"
           ipamVTEPIPIndex: 0
@@ -218,9 +169,9 @@ $ envsubst < ovn-k.yaml | oc apply -f -
 
 .Verification
 
-* Verify that the HBN and OVN-Kubernetes service resources are created:
+* Verify that the HBN and OVN-Kubernetes service configurations are created:
 +
 [source,terminal]
 ----
-$ oc get dpuservicetemplate,dpuserviceconfiguration -n dpf-operator-system | grep -E 'hbn|ovn'
+$ oc get dpuserviceconfiguration -n dpf-operator-system
 ----

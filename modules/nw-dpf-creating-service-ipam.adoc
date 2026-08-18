@@ -30,7 +30,7 @@ metadata:
   namespace: dpf-operator-system
 spec:
   ipv4Network:
-    network: $VTEP_CIDR
+    network: $HBN_OVN_NETWORK
     gatewayIndex: 3
     prefixSize: 29
 ---

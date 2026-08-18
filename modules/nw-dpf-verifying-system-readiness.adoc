@@ -21,7 +21,7 @@ After the DPU provisioning process completes, you can verify that all worker nod
 +
 [source,terminal]
 ----
-$ export KUBECONFIG=mgmt-kubeconfig
+$ export KUBECONFIG="$(pwd)/mgmt-kubeconfig"
 ----
 
 . Verify that all worker nodes are in a `Ready` state:

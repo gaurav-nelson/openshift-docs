@@ -12,8 +12,8 @@ The `ServiceMonitor` selects the mirrored DTS service in the `dpf-operator-syste
 
 .Prerequisites
 
-* You have enabled user workload monitoring in {product-title}.
-* You have applied the DTS `DPUServiceTemplate`, `DPUServiceConfiguration`, and `DPUDeployment` resources.
+* User workload monitoring is enabled in {product-title}.
+* The DTS `DPUServiceConfiguration` and `DPUDeployment` resources are applied.
 +
 For details, see "DPU telemetry observability with DTS".
 * You have access to the management cluster as a user with the `cluster-admin` role.
@@ -67,6 +67,6 @@ $ oc -n dpf-operator-system get servicemonitor doca-telemetry-service-monitor
 .Example output
 [source,terminal]
 ----
-NAME                              AGE
-doca-telemetry-service-monitor   ...
+NAME                               AGE
+doca-telemetry-service-monitor     ...
 ----

@@ -4,15 +4,15 @@
 
 :_mod-docs-content-type: PROCEDURE
 [id="nw-dpf-creating-dpfoperatorconfig_{context}"]
-= Create the `DPFOperatorConfig` resource
+= Create the DPFOperatorConfig resource
 
 [role="_abstract"]
-After you install the DPF Operator, create the required DPF custom resources, starting with a `DPFOperatorConfig` resource to configure the DPF Operator components, including the provisioning controller, static cluster manager, and SR-IOV device plugin controller. The full set of required resources is `DPFOperatorConfig`, `NodeSRIOVDevicePluginConfig`, `DPUFlavor`, `BFB`, and `DPUDeployment`.
+You can create a `DPFOperatorConfig` custom resource to configure the DPF Operator components, including the provisioning controller, static cluster manager, and SR-IOV device plugin controller.
 
 .Prerequisites
 
-* You have installed the DPF Operator.
-* You have set the DPF Operator environment variables. For details, see "DPF Operator installation environment variables".
+* The DPF Operator is installed.
+* The DPF Operator environment variables are set. For details, see "DPF Operator installation environment variables".
 
 .Procedure
 
@@ -55,6 +55,8 @@ spec:
     replicas: 1
   staticClusterManager:
     disable: false
+  flannel:
+    podCIDR: $FLANNEL_POD_CIDR
 ----
 
 . Apply the resource file:

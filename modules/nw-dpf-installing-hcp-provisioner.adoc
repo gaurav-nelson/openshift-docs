@@ -4,23 +4,23 @@
 
 :_mod-docs-content-type: PROCEDURE
 [id="nw-dpf-installing-hcp-provisioner_{context}"]
-= Install the DPF HCP Provisioner Operator
+= Install the dpf-hcp-provisioner-operator
 
 [role="_abstract"]
-You can install the DPF HCP Provisioner Operator by using a Helm chart.
-The Operator manages the lifecycle of hosted clusters for DPU environments.
+You can install the `dpf-hcp-provisioner-operator` by using a Helm chart.
+The operator manages the lifecycle of hosted clusters for DPU environments.
 
 .Prerequisites
 
-* You have installed the multicluster engine for Kubernetes Operator and enabled hosted control planes.
-* You have installed the MetalLB Operator and created a `MetalLB` instance.
+* The Multicluster Engine (MCE) Operator is installed and hosted control planes is enabled.
+* The MetalLB Operator is installed and a `MetalLB` instance is created.
 * A storage class is available for etcd persistent volumes, such as {lvms} or an equivalent.
-* You have installed the DPF Operator and the DPF CRDs are available.
-* You have installed the `helm` CLI.
+* The DPF Operator is installed and DPF CRDs are available.
+* The Helm CLI (`helm`) is installed on your workstation.
 
 .Procedure
 
-. Clone the DPF HCP Provisioner Operator repository:
+. Clone the `dpf-hcp-provisioner-operator` repository:
 +
 [source,terminal]
 ----
@@ -34,7 +34,7 @@ $ git clone https://github.com/rh-ecosystem-edge/dpf-hcp-provisioner-operator.gi
 $ cd dpf-hcp-provisioner-operator
 ----
 
-. Install the DPF HCP Provisioner Operator by using Helm:
+. Install the operator by using Helm:
 +
 [source,terminal]
 ----
@@ -42,13 +42,29 @@ $ helm install dpf-hcp-provisioner-operator \
     helm/dpf-hcp-provisioner-operator \
     --namespace dpf-hcp-provisioner-system \
     --create-namespace \
-    --set image.repository=registry.redhat.io/dpu-kit-for-nvidia-operator/dpf-hcp-provisioner-rhel10-operator \
+    --set image.repository=registry.redhat.io/dpu-kit-for-nvidia/dpf-hcp-provisioner-rhel10-operator \
     --set image.tag=v4.22
 ----
++
+.Example output
+[source,terminal]
+----
+NAME: dpf-hcp-provisioner-operator
+LAST DEPLOYED: ...
+NAMESPACE: dpf-hcp-provisioner-system
+STATUS: deployed
+----
++
+[NOTE]
+====
+The Helm chart creates a `DPFHCPProvisionerConfig` singleton custom resource named `default` that defines the operator-wide configuration.
+This resource controls settings such as the BlueField OCP layer image repository, MetalLB integration, and `DPUServiceTemplate` management.
+To customize these settings, modify the `provisionerConfig` section in your Helm `values.yaml` file before running the `helm install` command.
+====
 
 .Verification
 
-* Verify that the DPF HCP Provisioner Operator pod is running:
+* Verify that the operator pod is running:
 +
 [source,terminal]
 ----
@@ -60,4 +76,11 @@ $ oc get pods -n dpf-hcp-provisioner-system
 ----
 NAME                                                    READY   STATUS    RESTARTS   AGE
 dpf-hcp-provisioner-controller-manager-xxx-yyy          1/1     Running   0          1m
+----
+
+* Verify that the `DPFHCPProvisionerConfig` resource is created:
++
+[source,terminal]
+----
+$ oc get dpfhcpprovisionerconfigs.provisioning.dpu.hcp.io default
 ----

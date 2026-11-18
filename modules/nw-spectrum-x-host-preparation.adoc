@@ -7,7 +7,7 @@
 = Prepare worker nodes for Spectrum-X
 
 [role="_abstract"]
-You can prepare worker nodes for a single-plane Spectrum-X deployment by configuring host settings and creating Node Feature Discovery (NFD), SR-IOV, and NMState resources.
+You can prepare worker nodes for a single-plane Spectrum-X deployment by configuring host settings and creating Node Feature Discovery (NFD) and SR-IOV resources.
 
 [IMPORTANT]
 ====
@@ -19,10 +19,10 @@ Do not disable PCIe Access Control Services (ACS) unless the hardware vendor req
 .Prerequisites
 
 * You have cluster administrator privileges.
-* You have confirmed that the worker nodes, adapters, switches, firmware, and software versions are supported together.
-For more information, see link:https://docs.nvidia.com/networking/display/kubernetes2611/platform-support.html[NVIDIA Network Operator 26.1 platform support].
+* You have reviewed "Spectrum-X deployment considerations" for the supported hardware, firmware, and Operator combination.
 * You have installed the Node Feature Discovery, SR-IOV Network, and Kubernetes NMState Operators.
 For installation procedures, see "Installing the Node Feature Discovery Operator", "Installing the SR-IOV Network Operator", and "Installing the Kubernetes NMState Operator".
+* You have deployed the `NMState` instance so that the NMState handler runs on the worker nodes.
 * You have scheduled a maintenance window for changes that can reboot worker nodes.
 
 .Procedure
@@ -32,6 +32,10 @@ For installation procedures, see "Installing the Node Feature Discovery Operator
 [source,terminal]
 ----
 $ oc get nodes -l node-role.kubernetes.io/worker
+----
++
+[source,terminal]
+----
 $ oc debug node/<worker_node> -- chroot /host lspci -Dnn
 ----
 +
@@ -67,6 +71,10 @@ Apply the resource and monitor the worker `MachineConfigPool` resource:
 [source,terminal]
 ----
 $ oc apply -f 99-worker-rdma-memlock.yaml
+----
++
+[source,terminal]
+----
 $ oc get mcp worker
 ----
 +
@@ -103,6 +111,10 @@ Apply the resource only when the platform and workload design require these sett
 [source,terminal]
 ----
 $ oc apply -f 99-worker-spectrum-x-kernel-args.yaml
+----
++
+[source,terminal]
+----
 $ oc get mcp worker
 ----
 +
@@ -144,6 +156,10 @@ Apply the resource and confirm that the NFD pods are running:
 [source,terminal]
 ----
 $ oc apply -f nfd-instance.yaml
+----
++
+[source,terminal]
+----
 $ oc get pods -n openshift-nfd
 ----
 
@@ -174,24 +190,23 @@ Apply the resource and verify that the SR-IOV Network Operator pods are running:
 [source,terminal]
 ----
 $ oc apply -f sriov-operator-config.yaml
-$ oc get pods -n openshift-sriov-network-operator
 ----
-
-. Create the `NMState` custom resource if one does not already exist.
-Save the resource as `nmstate-instance.yaml`:
-+
-[source,yaml]
-----
-apiVersion: nmstate.io/v1
-kind: NMState
-metadata:
-  name: nmstate
-----
-+
-Apply the resource and verify that the NMState handler is running on each worker:
 +
 [source,terminal]
 ----
-$ oc apply -f nmstate-instance.yaml
+$ oc get pods -n openshift-sriov-network-operator
+----
+
+. Verify that the `NMState` instance exists and that the NMState handler is running on each worker:
++
+[source,terminal]
+----
+$ oc get nmstate nmstate
+----
++
+[source,terminal]
+----
 $ oc get pods -n openshift-nmstate -o wide
 ----
++
+If the instance is missing, deploy it by following "Installing the Kubernetes NMState Operator".

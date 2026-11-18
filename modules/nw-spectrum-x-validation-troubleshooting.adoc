@@ -22,10 +22,17 @@ You can verify Spectrum-X worker interfaces and test workload connectivity and p
 [source,terminal]
 ----
 $ oc debug node/<worker_node> -- chroot /host ip -d link show eth_r0_p0
+----
++
+[source,terminal]
+----
 $ oc debug node/<worker_node> -- chroot /host devlink dev eswitch show pci/<PCI_BDF>
 ----
 +
-Replace `<worker_node>` with the worker node name and `<PCI_BDF>` with the Peripheral Component Interconnect (PCI) bus, device, and function address of the adapter.
+where:
+
+`<worker_node>`:: Specifies the name of the worker node.
+`<PCI_BDF>`:: Specifies the PCI bus, device, and function address of the adapter.
 +
 Repeat the checks for each rail and confirm that the interface names and PCI addresses match the node policies.
 
@@ -34,24 +41,46 @@ Repeat the checks for each rail and confirm that the interface names and PCI add
 [source,terminal]
 ----
 $ rcp-tool topology validate
+----
++
+[source,terminal]
+----
 $ rcp-tool validation switch-config
+----
++
+[source,terminal]
+----
 $ rcp-tool validation host-config
+----
++
+[source,terminal]
+----
 $ rcp-tool validation ping
 ----
 
-. Run a workload-level connectivity and performance test that is supported for the installed Spectrum-X release. Use the vendor-provided test workload, images, and expected values for the target platform. Check the NVIDIA Spectrum-X verification and troubleshooting guidance for required switch, traffic-class, priority-flow-control, congestion-control, and end-to-end checks.
+. Run the vendor-supported connectivity and performance test for the installed Spectrum-X release. Use the vendor workload, images, and expected values. For required switch, traffic-class, priority-flow-control, congestion-control, and end-to-end checks, see the NVIDIA Spectrum-X verification and troubleshooting guidance.
 
 . If a resource does not become ready, inspect its status and the corresponding Operator logs before changing configuration:
 +
 [source,terminal]
 ----
 $ oc describe nicclusterpolicy nic-cluster-policy
+----
++
+[source,terminal]
+----
 $ oc get events -n nvidia-network-operator --sort-by=.lastTimestamp
 ----
 +
-Common causes include an unsupported combination of OpenShift, Operator, firmware, adapter, and Spectrum-X profile versions. PCI addresses might not match the installed hardware, or an interface name might differ from the SR-IOV policy. Rail address pools might overlap, or the switch MTU might differ from the host MTU. Resolve version and topology issues with the applicable vendor support matrix and reference architecture. Do not use repository workarounds that change PCIe settings, alter operating system labels, or replace driver images unless the hardware and software vendors approve them.
+Common causes include:
++
+* Unsupported OpenShift, Operator, firmware, adapter, or Spectrum-X profile combinations. See "Spectrum-X deployment considerations".
+* PCI addresses or interface names that do not match the installed hardware or SR-IOV policies.
+* Overlapping rail address pools or mismatched host and switch MTU values.
++
+Do not apply unapproved PCIe, operating system label, or driver-image workarounds.
 
-. If the Open vSwitch (OVS) Container Network Interface (CNI) plugin is missing, check the NVIDIA Spectrum-X verification and troubleshooting guidance. Confirm the SR-IOV Operator subscription and plugin image with the vendors before updating the subscription:
+. If the Open vSwitch (OVS) Container Network Interface (CNI) plugin is missing, follow the NVIDIA Spectrum-X verification and troubleshooting guidance. After the vendors confirm a compatible image, update the SR-IOV Operator subscription:
 
 .. Identify the SR-IOV Operator subscription:
 +
@@ -60,7 +89,7 @@ Common causes include an unsupported combination of OpenShift, Operator, firmwar
 $ oc get subscriptions -n openshift-sriov-network-operator
 ----
 
-.. After the vendors confirm that the image is compatible, update the subscription. The Network Operator 26.1.0 example uses the following image:
+.. Patch the subscription. The Network Operator 26.1.0 example uses the following image:
 +
 [source,terminal]
 ----

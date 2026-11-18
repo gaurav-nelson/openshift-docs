@@ -13,7 +13,7 @@ You can configure the NVIDIA Network and Maintenance Operators to deploy Spectru
 
 * You have cluster administrator privileges.
 * You have prepared the worker nodes for Spectrum-X.
-* You have reviewed the NVIDIA Network Operator platform support matrix for the {product-title}, NVIDIA Network Operator, adapter, firmware, and Spectrum-X reference architecture versions that you plan to use.
+* You have reviewed "Spectrum-X deployment considerations" for the supported Operator, firmware, and reference architecture combination.
 * You have installed a supported NVIDIA Network Operator version in the `nvidia-network-operator` namespace.
 For installation instructions, see link:https://docs.nvidia.com/networking/display/kubernetes2610/openshift/deployment-guide-openshift.html[NVIDIA Network Operator deployment guide for OpenShift].
 * You have access to the NVIDIA container registries required by the selected Network Operator release.
@@ -74,6 +74,10 @@ Apply the resource and confirm that it exists:
 [source,terminal]
 ----
 $ oc apply -f maintenance-operator-config.yaml
+----
++
+[source,terminal]
+----
 $ oc get maintenanceoperatorconfig default -n nvidia-maintenance-operator
 ----
 
@@ -103,6 +107,10 @@ Apply the claim and confirm that the cluster binds it to a volume:
 [source,terminal]
 ----
 $ oc apply -f nic-firmware-pvc.yaml
+----
++
+[source,terminal]
+----
 $ oc get pvc -n nvidia-network-operator
 ----
 
@@ -162,8 +170,7 @@ spec:
     version: network-operator-v26.1.0
 ----
 +
-The example uses NVIDIA Network Operator 26.1.0 and driver package version 3.3.0.
-Change the component versions only as a compatible set confirmed by NVIDIA for the target platform.
+Use only a version set that matches the combination described in "Spectrum-X deployment considerations".
 +
 If the NVIDIA registries require authentication, create and reference image pull secrets as described in the NVIDIA Network Operator documentation. Do not use empty credentials or publish registry credentials in configuration files.
 
@@ -181,6 +188,10 @@ $ oc apply -f nic-cluster-policy.yaml
 [source,terminal]
 ----
 $ oc get nicclusterpolicy nic-cluster-policy
+----
++
+[source,terminal]
+----
 $ oc get pods -n nvidia-network-operator -o wide
 ----
 +

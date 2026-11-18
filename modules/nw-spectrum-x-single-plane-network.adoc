@@ -43,6 +43,10 @@ Apply the `SriovNetworkPoolConfig` custom resource and wait for any resulting wo
 [source,terminal]
 ----
 $ oc apply -f sriov-pool-rdma.yaml
+----
++
+[source,terminal]
+----
 $ oc get mcp worker
 ----
 
@@ -74,6 +78,10 @@ Apply the pool configuration and wait for the worker `MachineConfigPool` resourc
 [source,terminal]
 ----
 $ oc apply -f sriov-pool-ovs-offload.yaml
+----
++
+[source,terminal]
+----
 $ oc get mcp worker
 ----
 
@@ -103,6 +111,10 @@ Apply the `NodeNetworkConfigurationPolicy` custom resource and verify that its s
 [source,terminal]
 ----
 $ oc apply -f nncp-rail0.yaml
+----
++
+[source,terminal]
+----
 $ oc get nncp spectrum-x-rail0
 ----
 
@@ -139,6 +151,10 @@ Apply the `SriovNetworkNodePolicy` custom resource and wait for the SR-IOV Netwo
 [source,terminal]
 ----
 $ oc apply -f sriov-node-policy-rail0.yaml
+----
++
+[source,terminal]
+----
 $ oc get sriovnetworknodestates -n openshift-sriov-network-operator
 ----
 
@@ -174,6 +190,10 @@ Apply the `CIDRPool` custom resource:
 [source,terminal]
 ----
 $ oc apply -f cidrpool-rail0.yaml
+----
++
+[source,terminal]
+----
 $ oc get cidrpool -n nvidia-network-operator
 ----
 
@@ -217,9 +237,29 @@ $ oc apply -f ovsnetwork-rail0.yaml
 [source,terminal]
 ----
 $ oc get nncp
+----
++
+[source,terminal]
+----
 $ oc get sriovnetworknodepolicy -n openshift-sriov-network-operator
+----
++
+[source,terminal]
+----
 $ oc get sriovnetworknodestates -n openshift-sriov-network-operator
+----
++
+[source,terminal]
+----
 $ oc get cidrpool -n nvidia-network-operator
+----
++
+[source,terminal]
+----
 $ oc get ovsnetwork -n openshift-sriov-network-operator
+----
++
+[source,terminal]
+----
 $ oc get network-attachment-definitions -n default
 ----

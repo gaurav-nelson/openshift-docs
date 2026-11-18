@@ -15,6 +15,23 @@ The {product-title} cluster runs the control plane, Operators, and workloads. Th
 In a single-plane deployment, the workload's east-west traffic uses the Spectrum-X fabric.
 A rail is a physical network path from a worker adapter to the fabric. The configuration associates each rail with a named adapter interface, an SR-IOV resource, an IP address pool, and a network attachment.
 
+.Comparison of Spectrum-X networking modes
+[cols="1,2",options="header"]
+|===
+
+|Mode |Description
+
+|Single plane
+|A single network plane connects the worker adapters to the Spectrum-X fabric.
+The single-plane example repeats the rail resources for each adapter rail in that plane.
+
+|Multi-plane
+|A multi-plane design uses more than one network plane.
+Adapter naming, switch connectivity, routing, and configuration resources depend on the selected reference architecture and Operator release.
+The selected platform and release must support the multi-plane design.
+
+|===
+
 BlueField-3 SuperNICs and BlueField data processing units (DPUs) have different roles.
 The single-plane example uses BlueField-3 SuperNICs as network adapters for Spectrum-X.
 A design that uses DPUs for data-plane functions, such as storage or inference traffic, has separate lifecycle and configuration requirements. For those tasks, see "About the NVIDIA DOCA Platform Framework (DPF) Operator".

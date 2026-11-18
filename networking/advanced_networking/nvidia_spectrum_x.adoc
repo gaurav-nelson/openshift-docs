@@ -13,8 +13,6 @@ include::modules/nw-spectrum-x-architecture.adoc[leveloffset=+1]
 
 include::modules/nw-spectrum-x-deployment-scope.adoc[leveloffset=+1]
 
-include::modules/nw-spectrum-x-modes.adoc[leveloffset=+1]
-
 include::modules/nw-spectrum-x-host-preparation.adoc[leveloffset=+1]
 
 include::modules/nw-spectrum-x-operator-configuration.adoc[leveloffset=+1]
@@ -36,7 +34,7 @@ include::modules/nw-spectrum-x-validation-troubleshooting.adoc[leveloffset=+1]
 * link:https://docs.nvidia.com/networking/display/kubernetes2670/spectrum-x/verify-and-troubleshoot.html[NVIDIA Spectrum-X verification and troubleshooting]
 * xref:../networking_operators/sr-iov-operator/installing-sriov-operator.adoc#installing-sriov-operator[Installing the SR-IOV Network Operator]
 * xref:../networking_operators/sr-iov-operator/configuring-sriov-operator.adoc#configuring-sriov-operator[Configuring the SR-IOV Network Operator]
-* xref:../networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator.adoc#installing-the-kubernetes-nmstate-operator-web-console_k8s-nmstate-operator[Installing the Kubernetes NMState Operator]
+* xref:../networking_operators/k8s-nmstate-about-the-k8s-nmstate-operator.adoc#installing-the-kubernetes-nmstate-operator-cli[Installing the Kubernetes NMState Operator]
 * xref:../../hardware_enablement/psap-node-feature-discovery-operator.adoc#installing-the-node-feature-discovery-operator_psap-node-feature-discovery-operator[Installing the Node Feature Discovery Operator]
 * xref:../hardware_networks/configuring-hardware-offloading.adoc#configuring-hardware-offloading[Configuring hardware offloading]
 * xref:../hardware_networks/configuring-sriov-rdma-cni.adoc#configuring-sriov-rdma-cni[Configuring the SR-IOV remote direct memory access (RDMA) container network interface (CNI)]

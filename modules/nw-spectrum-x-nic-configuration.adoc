@@ -20,7 +20,7 @@ Firmware or NIC configuration changes can interrupt network traffic and can requ
 
 * You have cluster administrator privileges.
 * You have installed the NVIDIA Network Operator and NIC Configuration Operator and verified that they are running.
-* You have confirmed the adapter type, peripheral component interconnect (PCI) addresses, breakout configuration, firmware bundle, and Spectrum-X reference architecture version for the target nodes.
+* You have confirmed the adapter type, peripheral component interconnect (PCI) addresses, breakout configuration, firmware bundle, and Spectrum-X reference architecture version for the target nodes against "Spectrum-X deployment considerations".
 * You have scheduled a maintenance window.
 
 .Procedure
@@ -68,7 +68,7 @@ spec:
   bfbUrlSource: https://content.mellanox.com/BlueField/FW-Bundle/bf-fwbundle-3.3.0-202_26.01-prod.bfb
 ----
 +
-The URL identifies the firmware bundle used in the RA2.1 example. Confirm that NVIDIA and the hardware vendor support the bundle for the adapter and platform before applying the `NicFirmwareSource` custom resource:
+The URL identifies the firmware bundle used in the RA2.1 example. Apply it only when it matches the supported combination in "Spectrum-X deployment considerations":
 +
 [source,terminal]
 ----
@@ -96,13 +96,17 @@ spec:
     updatePolicy: Update
 ----
 +
-Replace the sample PCI address with the PCI addresses for all target PFs. Confirm with NVIDIA and the hardware vendor that the firmware bundle supports each selected adapter model.
+Replace the sample PCI address with the PCI addresses for all target PFs.
 +
 Apply the `NicFirmwareTemplate` custom resource and monitor the NIC Configuration Operator and maintenance components until the firmware operation completes:
 +
 [source,terminal]
 ----
 $ oc apply -f nic-firmware-template.yaml
+----
++
+[source,terminal]
+----
 $ oc get pods -n nvidia-network-operator
 ----
 
@@ -132,7 +136,7 @@ spec:
       version: RA2.1
 ----
 +
-Replace the sample PCI address with the PCI addresses for all adapters that belong to the single plane. Confirm that RA2.1 and the `a2dc` adapter type are supported for the selected Network Operator release before applying the `NicConfigurationTemplate` custom resource:
+Replace the sample PCI address with the PCI addresses for all adapters that belong to the single plane. Apply the resource only when RA2.1 and the `a2dc` adapter type match "Spectrum-X deployment considerations":
 +
 [source,terminal]
 ----
@@ -148,6 +152,10 @@ $ oc apply -f nic-configuration-template.yaml
 [source,terminal]
 ----
 $ oc get pods -n nvidia-network-operator
+----
++
+[source,terminal]
+----
 $ oc debug node/<worker_node> -- chroot /host ip -brief link
 ----
 +
